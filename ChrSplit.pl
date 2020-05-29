@@ -39,8 +39,8 @@ open OUT1, ">target_$target_file-$query_file.sh" or die "$!";
 open OUT2, ">query_$query_file-$target_file.sh" or die "$!";
 foreach my $t (@target) {
    foreach my $q (@query) {
-      print OUT1 "/usr/bin/time -v $minimap2 -c -K 10M --no-kalloc --print-qname --cs=long ./$target_file\_cut/$t ./$query_file\_cut/$q > ./$target_file\_cut/$t.$q.long.paf\n";
-      print OUT2 "/usr/bin/time -v $minimap2 -c -K 10M --no-kalloc --print-qname --cs=long ./$query_file\_cut/$q ./$target_file\_cut/$t > ./$query_file\_cut/$q.$t.long.paf\n";
+      print OUT1 "/usr/bin/time -v $minimap2 -c --no-kalloc --print-qname --cs=long -t 18 ./$target_file\_cut/$t ./$query_file\_cut/$q -o ./$target_file\_cut/$t.$q.long.paf\n";
+      print OUT2 "/usr/bin/time -v $minimap2 -c --no-kalloc --print-qname --cs=long -t 18 ./$query_file\_cut/$q ./$target_file\_cut/$t -o ./$query_file\_cut/$q.$t.long.paf\n";
   }
 }
 
