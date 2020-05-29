@@ -14,6 +14,7 @@ use File::Basename qw(&basename &dirname);
 # Chaining Netting and adding synteny infortmation for the output (.axt format) from  
 # pairwise whole genome alignment(LAST, LASTZ, MUMmer,minimap2 et al...)
 # 
+# Prerequisite : Kent's utilities;
 #
 # Usage:  perl ChainNetSynnet.pl -tseq target.fasta -qseq query.fasta -axt . -linearGap medium -tname A -qname B
 #
