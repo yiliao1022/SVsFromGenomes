@@ -55,7 +55,10 @@ END.
 exit;
 }
 
-
+# set program paths
+#$minimap2 = '';
+#$TBA = '~/las/git_bin/multiz-tba.012109/';
+my $kenUtil = '~/las/git_bin/kentUtils/linux.x86_64.v385/';
 
 
 my $target_file = basename($target);
@@ -64,24 +67,26 @@ my $target_path = dirname($target);
 my $query_path = dirname($query);
 my $axt_path = dirname($axt);
 
-unless (-e "$target_path/$target_file.sizes") {
-        `faSize -detailed $target > $target_path/$target_file.sizes`;
+unless (-s "$target_path/$target_file.sizes") {
+        `${kenUtil}faSize -detailed $target > $target_path/$target_file.sizes`;
 } 
-unless (-e "$target_path/$target_file.2bit") {
-        `faToTwoBit $target $target_path/$target_file.2bit`;
+unless (-s "$target_path/$target_file.2bit") {
+        `${kenUtil}faToTwoBit $target $target_path/$target_file.2bit`;
 }
-unless (-e "$query_path/$query_file.sizes") {
-        `faSize -detailed $query > $query_path/$query_file.sizes`;
+unless (-s "$query_path/$query_file.sizes") {
+        `${kenUtil}faSize -detailed $query > $query_path/$query_file.sizes`;
 }
-unless (-e "$query_path/$query_file.2bit") {
-        `faToTwoBit $query $query_path/$query_file.2bit`;
+unless (-s "$query_path/$query_file.2bit") {
+        `${kenUtil}faToTwoBit $query $query_path/$query_file.2bit`;
 }
 
-`for i in $axt/*.axt; do axtChain -linearGap=$linearGap \$i $target_path/$target_file.2bit $query_path/$query_file.2bit \$i.chain;done`;
-`chainMergeSort $axt/*.chain > $axt/$tname.$qname.all.chain`;
-`chainPreNet $axt/$tname.$qname.all.chain $target_path/$target_file.sizes $query_path/$query_file.sizes $axt/$tname.$qname.all.chain.filter`;
-`chainNet -minSpace=1 $axt/$tname.$qname.all.chain.filter $target_path/$target_file.sizes $query_path/$query_file.sizes $axt/$tname.$qname.all.chain.filter.tnet $axt/$tname.$qname.all.chain.filter.qnet`;
-`netSyntenic $axt/$tname.$qname.all.chain.filter.tnet $axt/$tname.$qname.all.chain.filter.tnet.synnet`;
+`for i in $axt/*.axt; do
+	${kenUtil}axtChain -linearGap=$linearGap \$i $target_path/$target_file.2bit $query_path/$query_file.2bit \$i.chain;
+done`;
+`${kenUtil}chainMergeSort $axt/*.chain > $axt/$tname.$qname.all.chain`;
+`${kenUtil}chainPreNet $axt/$tname.$qname.all.chain $target_path/$target_file.sizes $query_path/$query_file.sizes $axt/$tname.$qname.all.chain.filter`;
+`${kenUtil}chainNet -minSpace=1 $axt/$tname.$qname.all.chain.filter $target_path/$target_file.sizes $query_path/$query_file.sizes $axt/$tname.$qname.all.chain.filter.tnet $axt/$tname.$qname.all.chain.filter.qnet`;
+`${kenUtil}netSyntenic $axt/$tname.$qname.all.chain.filter.tnet $axt/$tname.$qname.all.chain.filter.tnet.synnet`;
 
 
 
